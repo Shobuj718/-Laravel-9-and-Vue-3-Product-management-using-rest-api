@@ -22,6 +22,7 @@ class ProductResource extends JsonResource
             'detail' => $this->detail,
             'created' => $this->created_at,
             'categories' => CategoryResource::collection($this->categories),
+            'images' =>$this->product_images
         ];
     }
 }

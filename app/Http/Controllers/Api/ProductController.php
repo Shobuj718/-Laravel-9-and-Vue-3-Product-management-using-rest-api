@@ -45,17 +45,6 @@ class ProductController extends BaseController
 
         try {
             $product =  $this->productRepository->create($request->all());
-
-            // if ($request->hasFile('product_image')) {
-            //     $file = $request->file('product_image');
-            //     $name = 'product/' . uniqid() . '.' . $file->extension();
-            //     $file->storePubliclyAs('public', $name);
-            //     $product_image = new ProductImage;
-            //     $product_image->name = $name;
-            //     $product_image->product_id = $product->id;
-            //     $product_image->save();
-            // }
-
             return $this->sendResponse($product, 'Product created successfully.');
         } catch (\Exception $e) {
             return $this->sendError($e->getMessage());
@@ -84,8 +73,9 @@ class ProductController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ProductUpdateRequest $request, $id)
+    public function update(Request $request, $id)
     {
+        // return $request->all();
         try {
             $product =  $this->productRepository->update($id, $request->all());
             return $this->sendResponse($product, 'Product updated successfully.');

@@ -55,6 +55,7 @@ export default {
         async logout(){
             await axios.post('/api/auth/logout').then(({data})=>{
                 this.signOut()
+                this.$toast.success('User logout success');
                 this.$router.push({name:"login"})
             })
         }

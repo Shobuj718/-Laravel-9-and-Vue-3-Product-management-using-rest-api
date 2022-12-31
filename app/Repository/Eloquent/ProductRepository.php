@@ -3,6 +3,7 @@
 namespace App\Repository\Eloquent;
 
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Repository\BaseRepository;
 use App\Http\Resources\ProductResource;
 use App\Repository\ProductRepositoryInterface;
@@ -58,13 +59,16 @@ class ProductRepository extends BaseRepository  implements ProductRepositoryInte
             $product->categories()->sync($data['category']);
         }
 
-         // if ($data['product_image']) {
-        //     $file = $data->file('product_image');
-        //     $name = '/product/' . uniqid() . '.' . $file->extension();
-        //     $file->storePubliclyAs('public', $name);
-        //     // $product->image = $name;
-        //     // $product->save();
-        // }
+        //need to create file helper function
+        if ($data['product_image']) {
+            $file = $data['product_image'];
+            $name = '/product/' . uniqid() . '.' . $file->extension();
+            $file->storePubliclyAs('public', $name);
+            $product_image = new ProductImage;
+            $product_image->name = $name;
+            $product_image->product_id = $product->id;
+            $product_image->save();
+        }
 
         return new ProductResource($product);    
         
@@ -92,12 +96,16 @@ class ProductRepository extends BaseRepository  implements ProductRepositoryInte
             $product->categories()->sync($data['category']);
         }
 
-        // if ($data['product_image']) {
-        //     $file = $data->file('product_image');
+        //need to create file helper function
+        // if (isset($data['product_image'])) {
+        //     // $product = ProductImage::findOrFail($id)->delete();
+        //     $file = $data['product_image'];
         //     $name = '/product/' . uniqid() . '.' . $file->extension();
         //     $file->storePubliclyAs('public', $name);
-        //     // $product->image = $name;
-        //     // $product->save();
+        //     $product_image = new ProductImage;
+        //     $product_image->name = $name;
+        //     $product_image->product_id = $product->id;
+        //     $product_image->save();
         // }
 
         return new ProductResource($product);

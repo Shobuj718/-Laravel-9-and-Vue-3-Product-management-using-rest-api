@@ -16,7 +16,7 @@
                             </div>
                             <label>Detail</label>
                             <div class="form-group">
-                                <textarea name="detail" v-model="product.detail" required id="" cols="50" rows="3"></textarea>
+                                <textarea name="detail" v-model="product.detail" required id="" cols="130" rows="3"></textarea>
                                 <!-- <input type="text" class="form-control" v-model="product.detail"> -->
                             </div>
                             <div class="form-group">
@@ -29,6 +29,13 @@
                                     placeholder="Select category"
                                     track-by="name"
                                     />
+                            </div>
+
+                            <div class="form-group">
+                                <label>File</label>
+                                <input type="file" class="form-control" id="form-control"
+                                        ref="file" @change="handleFileObject()">
+                                        
                             </div>
 
                             <!-- <div class="form-group">
@@ -82,6 +89,8 @@
                     category: null,
                 },
                 categories: [],
+                product_image : null,
+                product_image_name: null,
                 
             }
         },
@@ -112,7 +121,7 @@
                     })
                     .catch((err) => {
                         // console.log(err.response.data.message)
-                        this.$toast.error(err.response.data.message);
+                        this.$toast.error(err.message);
                      })
                     .finally(() => this.loading = false)
             },
@@ -133,6 +142,7 @@
                 async logout() {
                     await axios.post("/api/auth/logout").then(({ data }) => {
                         this.signOut();
+                        this.$toast.success('User logout success');
                         this.$router.push({ name: "login" });
                     });
                 },

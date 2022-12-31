@@ -44,8 +44,9 @@
             <div class="row">
               <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
                 <div class="bg-image hover-zoom ripple rounded ripple-surface">
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/img%20(4).webp"
-                    class="w-100" />
+                  <!-- <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/img%20(4).webp"
+                    class="w-100" /> -->
+                     <img  v-for="image in product.images" :key="image.id" :src="'/storage/'+image.name" class="w-100">
                   <a href="#!">
                     <div class="hover-overlay">
                       <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);"></div>
@@ -155,6 +156,7 @@
                 async logout() {
                     await axios.post("/api/auth/logout").then(({ data }) => {
                         this.signOut();
+                        this.$toast.success('User logout success');
                         this.$router.push({ name: "login" });
                     });
                 },

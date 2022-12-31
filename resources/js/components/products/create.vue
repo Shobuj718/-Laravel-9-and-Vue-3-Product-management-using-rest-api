@@ -16,7 +16,7 @@
                             </div>
                             <label>Detail</label>
                             <div class="form-group">
-                                <textarea name="detail" v-model="form.detail" required id="" cols="50" rows="3"></textarea>
+                                <textarea name="detail" v-model="form.detail" required id="" cols="130" rows="3"></textarea>
                                 <!-- <input type="text" class="form-control" v-model="form.detail"> -->
                             </div>
                             <div class="form-group">
@@ -35,7 +35,7 @@
 
                             <div class="form-group">
                                 <label>File</label>
-                                <input type="file" class="form-control" id="form-control"
+                                <input type="file" class="form-control" required id="form-control"
                                         ref="file" @change="handleFileObject()">
                                         
                             </div>
@@ -93,7 +93,6 @@
                 categories: [],
                 product_image : null,
                 product_image_name: null,
-                file: '',
                 
             }
         },
@@ -110,27 +109,23 @@
                 this.product_image = this.$refs.file.files[0]
                 this.product_image_name = this.product_image.name
             },
-            onChange(e) {
-                this.file = e.target.files[0];
-            },
+           
             addProduct(e) {
                 console.log(this.form)
                 if(this.form.category){
                     this.form.category = this.form.category.map((item) => item.id)
                 }
-                // let form = new FormData()
-                // form.append('product_image', this.product_image)
-                //  _.each(this.form, (value, key) => {
-                //     form.append(key, value)
-                // })
-                // axios.post('/api/products', this.form,{
-                //     headers: {
-                //         'Content-Type': "multipart/form-data; charset=utf-8; boundary=" + Math.random().toString().substr(2)
-                //     }
-                // })
-
-                
-                axios.post('/api/products', this.form)
+                let form = new FormData()
+                form.append('product_image', this.product_image)
+                 _.each(this.form, (value, key) => {
+                    form.append(key, value)
+                })
+                    axios.post('/api/products', form,{
+                        headers: {
+                            'Content-Type': "multipart/form-data; charset=utf-8; boundary=" + Math.random().toString().substr(2)
+                        }
+                    })
+                // axios.post('/api/products', this.form)
                     .then(response => {
                         this.$toast.success(`Product created success`);
                         this.$router.push({ name: 'products' })
@@ -138,7 +133,7 @@
                     .catch((err) => {
                         this.form.category = null
                         // console.log(err.response.data.message)
-                        this.$toast.error(err.response.data.message);
+                        this.$toast.error(err.message);
                      })
                     .finally(() => this.loading = false)
             },
@@ -159,6 +154,7 @@
                 async logout() {
                     await axios.post("/api/auth/logout").then(({ data }) => {
                         this.signOut();
+                        this.$toast.success('User logout success');
                         this.$router.push({ name: "login" });
                     });
                 },
