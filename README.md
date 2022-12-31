@@ -2,6 +2,7 @@
 
 - Laravel 9
 - Vue 3
+- Cache(Implemented only for Product CRUD)
 - Vite
 - Sanctum
 - MySQL
